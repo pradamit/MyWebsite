@@ -1,0 +1,68 @@
+{% extends 'authors/base.html' %}
+
+{% block user_name %}
+<p class="text-right mt-n5 pr-3">Welcome, {{ user.first_name }} {{ user.last_name }}</p>
+{% endblock %}
+
+{% block content %}
+<div class="col px-md-2">
+    <form action="{% url 'auth_home' %}" method="get" class="btn-group" aria-label="Basic example" name="view">
+        {% if state == 'inprogress' %}
+            <button type="submit" class="btn btn-secondary active" value="{{ 'inprogress' }}" name="view">In-Progress</button>
+            <button type="submit" class="btn btn-secondary" name="view" value="{{ 'pending' }}">Pending</button>
+            <button type="submit" class="btn btn-secondary" name="view" value="{{ 'published' }}">Approved</button>
+        {% elif state == 'pending' %}
+            <button type="submit" class="btn btn-secondary" value="{{ 'inprogress' }}" name="view">In-Progress</button>
+            <button type="submit" class="btn btn-secondary active" name="view" value="{{ 'pending' }}">Pending</button>
+            <button type="submit" class="btn btn-secondary" name="view" value="{{ 'published' }}">Approved</button>
+        {% else %}
+            <button type="submit" class="btn btn-secondary" value="{{ 'inprogress' }}" name="view">In-Progress</button>
+            <button type="submit" class="btn btn-secondary" name="view" value="{{ 'pending' }}">Pending</button>
+            <button type="submit" class="btn btn-secondary active" name="view" value="{{ 'published' }}">Approved</button>
+        {% endif %}
+    </form>
+</div>
+<div class="container">
+    {% if resp %}
+        {% for i in resp %}
+            <br>
+            <div class="card mx-auto">
+                <div class="card-header">
+                    Author : {{ i.author }}
+                </div>
+                <div class="card-body">
+                    <small class="card-title">Post ID : {{ i.id }}, State: {{ i.state }}</small><br> <br>
+                    <form action="{% url 'auth_home' %}" method="post">
+                        {% csrf_token %}
+                        {% if i.state == 'draft' %}
+                                <textarea name="draft_text" class="form-control" placeholder="Write your post here">{{ i.content }}</textarea><br>
+                        {% else %}
+                            <p class="class-text">{{ i.content }}</p>
+                        {% endif %}
+                        <button name="edit" type="submit" class="btn btn-primary" value="{{ 'draft' }}">Edit</button>
+                        {% if i.state == 'draft' or i.state == 'saved' %}
+                            <button name="save" type="submit" class="btn btn-primary" value="{{ 'saved' }}">Save</button>
+                            <button name="defer" type="submit" class="btn btn-primary" value="{{ 'pending' }}">Defer</button>
+                        {% endif %}
+                        <button name="delete" type="submit" class="btn btn-primary" value="{{ 'delete' }}">Delete</button>
+                        <input name="post_id" type="hidden" value="{{ i.id }}">
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+            <p class="text-center">No data to display</p>
+    {% endif %}
+</div>
+<br>
+{% if state == 'inprogress' %}
+<div class="container">
+    <form action="{% url 'auth_home' %}" method="post" name="create_new_post">
+        {% csrf_token %}
+        <button type="submit" name="create_new_post" class="btn btn-primary" value="create_new_post">Create New Post</button>
+    </form>
+</div>
+<br>
+{% endif %}
+<br>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'mysite/base.html' %}
+
+{% block content %}
+<br>
+<div class="container">
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">{{ form.as_ul }}</div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <input name="fname" type="text" class="form-control" placeholder="First name">
+            </div>
+            <div class="form-group col-md-6">
+                <input name="lname" type="text" class="form-control" placeholder="Last name">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <br>
+    </form>
+    <br>
+</div>
+{% endblock %}

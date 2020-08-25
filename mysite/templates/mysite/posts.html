@@ -1,0 +1,22 @@
+{% extends 'mysite/base.html' %}
+
+{% block content %}
+<div class="container">
+    {% if resp %}
+        {% for i in resp %}
+            <br>
+            <div class="shadow-lg card mx-auto">
+                <div class="card-header">
+                    {{ i.author }}
+                </div>
+                <div class="card-body">
+                    <p class="class-text">{{ i.content }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+            <p class="text-center">No data to display</p>
+    {% endif %}
+</div>
+<br>
+{% endblock %}
