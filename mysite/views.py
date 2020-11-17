@@ -39,7 +39,7 @@ def homepage(request):
     sunset_sunrise = requests.request("GET", url_sunset_sunrise).json()
     sunrise = time_conversion(sunset_sunrise['results']['sunrise'])
     sunset = time_conversion(sunset_sunrise['results']['sunset'])
-    url_news = 'http://newsapi.org/v2/top-headlines?country=in&apiKey=13e3fa63f39f48948b97f3b0e19b52a6'
+    url_news = 'http://newsapi.org/v2/top-headlines?country=in&apiKey=<key>'
     news = requests.request("GET", url_news).json()
     articles = news['articles']
     lenght_of_news_list = len(articles)
