@@ -19,6 +19,7 @@ def author_home(request):
             new_post_created = user_posts.objects.create(user_id=user)
             new_post_created.author = user.first_name +' '+ user.last_name
             new_post_created.save()
+            request.session.flush()
             return redirect('/login/author/')
         else:
             post_id = request.POST.get('post_id')
